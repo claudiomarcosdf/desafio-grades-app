@@ -17,15 +17,23 @@ const GradeList = () => {
     setSearchName(searchName);
   };
 
-  const retrieveGrade = () => {
-    GradeDataService.getAll()
-      .then((response) => {
-        setGrade(response.data);
-        console.log(response.data);
-      })
-      .catch((e) => {
-        console.log('ERRO NA CONEXÃO' + e);
-      });
+  const retrieveGrade = async () => {
+    const gradesResult = await GradeDataService.getAll();
+
+    const grades = gradesResult.data.map(
+      ({ _id, name, subject, type, value, lastModified }) => {
+        return {
+          id: _id,
+          name,
+          subject,
+          type,
+          value,
+          lastModified,
+        };
+      }
+    );
+
+    setGrade(grades);
   };
 
   const refreshList = () => {
